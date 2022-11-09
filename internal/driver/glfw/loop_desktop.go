@@ -29,6 +29,25 @@ func (d *gLDriver) initGLFW() {
 	})
 }
 
+func (d *gLDriver) waitEvents() {
+	defer func() {
+		if r := recover(); r != nil {
+			fyne.LogError(fmt.Sprint("GLFW wait poll event error: ", r), nil)
+		}
+	}()
+
+	glfw.WaitEventsTimeout(5)
+}
+
+func (d *gLDriver) postEmptyEvent() {
+	defer func() {
+		if r := recover(); r != nil {
+			fyne.LogError(fmt.Sprint("GLFW send empty event error: ", r), nil)
+		}
+	}()
+	glfw.PostEmptyEvent()
+}
+
 func (d *gLDriver) tryPollEvents() {
 	defer func() {
 		if r := recover(); r != nil {
